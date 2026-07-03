@@ -1,11 +1,11 @@
 xml:lang="ms"
-title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
+title:Kuiz Interaktif Zaman Prasejarah: Mod Kumpulan Kelas:index.html
 <!DOCTYPE html>
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akademi Prasejarah Galaksi - Kuiz Interaktif</title>
+    <title>Akademi Prasejarah Galaksi - Kuiz Kumpulan Kelas</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Orbitron & Plus Jakarta Sans -->
@@ -13,13 +13,16 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at center, #111026 0%, #080711 100%);
+            background: radial-gradient(circle at center, #0e0d1f 0%, #05040a 100%);
         }
         .font-orbitron {
             font-family: 'Orbitron', sans-serif;
         }
         .glow-cyan {
             text-shadow: 0 0 10px rgba(6, 182, 212, 0.6), 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+        .glow-amber {
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.6), 0 0 20px rgba(245, 158, 11, 0.4);
         }
         .glow-box-cyan {
             box-shadow: 0 0 15px rgba(6, 182, 212, 0.25);
@@ -44,6 +47,7 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
 </head>
 <body class="min-h-screen text-slate-100 relative overflow-x-hidden flex flex-col justify-between">
 
+    <!-- STREAMING_CHUNK: Setting up background visuals and sound generator -->
     <!-- Background Layer -->
     <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-40">
         <div class="absolute inset-0 stars-bg"></div>
@@ -51,7 +55,6 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
 
     <!-- SOUND MANAGER & CONTROLLER -->
     <script>
-        // Web Audio API Synthesizer Sounds to avoid external assets issues
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         let soundEnabled = true;
 
@@ -76,7 +79,6 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
                 osc.stop(audioCtx.currentTime + 0.1);
             } else if (type === 'correct') {
                 osc.type = 'triangle';
-                // Success futuristic chord
                 osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
                 osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.12); // E5
                 osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.24); // G5
@@ -86,7 +88,6 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
                 osc.stop(audioCtx.currentTime + 0.5);
             } else if (type === 'wrong') {
                 osc.type = 'sawtooth';
-                // Futuristic descending error buzz
                 osc.frequency.setValueAtTime(150, audioCtx.currentTime);
                 osc.frequency.linearRampToValueAtTime(70, audioCtx.currentTime + 0.4);
                 gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
@@ -94,7 +95,6 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
                 osc.start();
                 osc.stop(audioCtx.currentTime + 0.4);
             } else if (type === 'win') {
-                // Happy fan fare synth chord
                 const now = audioCtx.currentTime;
                 [440, 554, 659, 880].forEach((freq, idx) => {
                     const o = audioCtx.createOscillator();
@@ -126,15 +126,16 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
         }
     </script>
 
+    <!-- STREAMING_CHUNK: Rendering the site header -->
     <!-- HEADER -->
     <header class="relative z-10 p-4 border-b border-cyan-500/20 bg-slate-950/80 backdrop-blur-md">
-        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-3">
                 <div class="p-2 bg-cyan-500/10 border border-cyan-400 rounded-full animate-pulse">
                     <span class="text-xl">🚀</span>
                 </div>
                 <div>
-                    <h1 class="text-xs tracking-wider uppercase font-bold text-cyan-400 font-orbitron">Misi Pengembaraan Masa</h1>
+                    <h1 class="text-xs tracking-wider uppercase font-bold text-cyan-400 font-orbitron">Misi Pembelajaran Kelas</h1>
                     <p class="text-base font-black text-white font-orbitron tracking-wide">AKADEMI PRASEJARAH GALAKSI</p>
                 </div>
             </div>
@@ -142,141 +143,227 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
                 <button id="sound-btn" onclick="toggleSound()" class="px-3 py-1 text-xs font-orbitron font-bold rounded-full border border-cyan-500/50 bg-cyan-950/40 text-cyan-300 transition-all hover:bg-cyan-900/40">
                     🔊 Bunyi: ON
                 </button>
-                <div id="classroom-indicator" class="hidden sm:block px-3 py-1 text-xs font-bold rounded-full bg-indigo-950 border border-indigo-500/50 text-indigo-300">
-                    Aktiviti Kelas Kelas 🚀
+                <div class="px-3 py-1 text-xs font-bold rounded-full bg-purple-950 border border-purple-500/50 text-purple-300 font-orbitron">
+                    Kumpulan Max 6 👥
                 </div>
             </div>
         </div>
     </header>
 
+    <!-- STREAMING_CHUNK: Structuring the main container cards -->
     <!-- MAIN APP SCREEN CONTAINER -->
-    <main class="relative z-10 flex-grow max-w-4xl w-full mx-auto p-4 flex flex-col justify-center">
+    <main class="relative z-10 flex-grow max-w-6xl w-full mx-auto p-4 flex flex-col justify-center">
 
-        <!-- SCREEN 1: SPLASH SCREEN (MULA) -->
+        <!-- SCREEN 1: SPLASH SCREEN (MULA & PILIHAN MOD) -->
         <div id="screen-splash" class="w-full bg-slate-900/70 border border-cyan-500/30 rounded-2xl p-6 sm:p-10 text-center glow-box-cyan backdrop-blur-lg transition-all duration-500">
-            <div class="mb-6 inline-block p-4 rounded-full bg-cyan-950/60 border-2 border-cyan-400/80 animate-bounce">
+            <div class="mb-4 inline-block p-4 rounded-full bg-cyan-950/60 border-2 border-cyan-400/80 animate-bounce">
                 <span class="text-5xl">🤖</span>
             </div>
             
             <h2 class="text-3xl sm:text-5xl font-extrabold font-orbitron mb-3 tracking-wide bg-gradient-to-r from-cyan-400 via-sky-300 to-purple-400 bg-clip-text text-transparent glow-cyan">
-                EPISOD 3: ZAMAN PRASEJARAH
+                EDISI KELAS INTERAKTIF
             </h2>
-            <p class="text-lg sm:text-xl text-slate-300 mb-6 max-w-xl mx-auto leading-relaxed">
-                "Tanpa tulisan, kita menggunakan artifak untuk membaca sejarah mereka!" Bersedia untuk melompat ke masa lalu!
+            <p class="text-base sm:text-lg text-slate-300 mb-6 max-w-xl mx-auto leading-relaxed">
+                Rujukan: <span class="text-cyan-400 font-mono font-bold">Jedi_Prasejarah.pdf</span>. Uji kefahaman murid mengenai evolusi kehidupan prasejarah secara Solo atau Kumpulan!
             </p>
 
-            <div class="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 max-w-md mx-auto mb-8 text-left text-sm text-slate-300 space-y-2">
-                <div class="flex items-center gap-2 text-cyan-400 font-bold font-orbitron">
-                    <span>💡</span> CARA BERMAIN DI KELAS:
-                </div>
-                <p>1. Guru boleh memancarkan kuiz ini pada skrin utama bilik darjah.</p>
-                <p>2. Bahagikan kelas kepada kumpulan kecil atau panggil murid secara rawak untuk menjawab.</p>
-                <p>3. Setiap jawapan betul memberikan tenaga perisai kepada kapal angkasa anda!</p>
-            </div>
-
-            <button onclick="startQuiz()" class="px-8 py-4 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-orbitron font-bold text-lg rounded-xl transition-all duration-300 transform hover:scale-105 glow-box-cyan border border-cyan-300/40">
-                LANCARKAN HIPERANGKASA! 🌌
-            </button>
-        </div>
-
-        <!-- SCREEN 2: GAMEPLAY SCREEN -->
-        <div id="screen-quiz" class="hidden w-full bg-slate-900/70 border border-cyan-500/30 rounded-2xl p-4 sm:p-8 glow-box-cyan backdrop-blur-lg transition-all duration-300">
-            
-            <!-- Quiz Progress Panel -->
-            <div class="flex justify-between items-center mb-4 text-xs font-orbitron border-b border-slate-800 pb-3">
-                <div class="flex items-center gap-2">
-                    <span class="px-2 py-1 bg-cyan-950 text-cyan-400 rounded border border-cyan-500/30 font-bold" id="question-index">SOALAN 1 / 10</span>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="text-right">
-                        <span class="text-slate-400">TENAGA PERISAI:</span>
-                        <span class="text-emerald-400 font-bold block sm:inline ml-1" id="score-val">100%</span>
-                    </div>
-                    <div class="w-24 bg-slate-800 h-2 rounded-full overflow-hidden">
-                        <div id="score-bar" class="bg-emerald-400 h-full w-full transition-all duration-300"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Progress Bar Line -->
-            <div class="w-full bg-slate-950 rounded-full h-1.5 mb-6 overflow-hidden">
-                <div id="progress-bar-line" class="bg-cyan-400 h-full transition-all duration-300" style="width: 10%;"></div>
-            </div>
-
-            <!-- Question display -->
-            <div class="mb-6">
-                <div class="text-cyan-400 text-xs uppercase tracking-widest mb-1 font-orbitron font-bold" id="question-tag">Definisi Prasejarah</div>
-                <h3 id="question-text" class="text-lg sm:text-xl font-bold leading-relaxed text-white">
-                    Memuatkan persoalan pengembaraan masa...
-                </h3>
-            </div>
-
-            <!-- Answer Options Layout -->
-            <div id="options-container" class="grid grid-cols-1 gap-3 sm:gap-4 mb-6">
-                <!-- Buttons will be dynamically inserted here -->
-            </div>
-
-            <!-- Explanation & Hint Panel (Hidden initially) -->
-            <div id="feedback-panel" class="hidden rounded-xl p-4 transition-all duration-300 mb-6">
-                <div class="flex items-start gap-3">
-                    <span class="text-2xl mt-0.5" id="feedback-icon">🚀</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-8">
+                <!-- Solo Mode Card -->
+                <div class="p-6 bg-slate-950/50 border border-slate-800 rounded-xl text-left flex flex-col justify-between hover:border-cyan-500/40 transition-all">
                     <div>
-                        <h4 class="font-bold text-sm font-orbitron mb-1 uppercase tracking-wider" id="feedback-title">Analisis Sistem</h4>
-                        <p class="text-xs sm:text-sm leading-relaxed" id="feedback-rationale">Penjelasan sistem analisis.</p>
+                        <h3 class="text-lg font-bold font-orbitron text-cyan-400 mb-2">⭐ MOD SOLO</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Sesuai untuk murid bermain secara individu atau paparan berpusat dikawal oleh guru dengan sistem perisai tenaga.</p>
                     </div>
+                    <button onclick="initSoloMode()" class="mt-6 w-full py-3 bg-slate-800 hover:bg-slate-700 text-white font-orbitron font-bold text-sm rounded-lg border border-slate-700 transition-all">
+                        Main Solo 🚀
+                    </button>
                 </div>
-            </div>
 
-            <!-- Next Question Control -->
-            <div class="flex justify-between items-center gap-4">
-                <button id="hint-btn" onclick="revealHint()" class="px-3 py-2 text-xs font-bold font-orbitron rounded-lg border border-slate-700 bg-slate-800/40 text-slate-300 hover:bg-slate-700 transition-all">
-                    💡 Imbas Petunjuk
-                </button>
-                <div id="hint-text" class="hidden text-xs text-yellow-300 font-medium italic border-l-2 border-yellow-400 pl-2 max-w-sm">
-                    Petunjuk holografik dimuat naik...
+                <!-- Group Mode Card -->
+                <div class="p-6 bg-slate-950/50 border border-purple-500/30 rounded-xl text-left flex flex-col justify-between hover:border-purple-400/40 transition-all shadow-lg">
+                    <div>
+                        <h3 class="text-lg font-bold font-orbitron text-purple-400 mb-2">👥 MOD KUMPULAN</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Maksimum 6 kumpulan. Sistem giliran (turn-based) dinamik dengan papan pendahulu (Leaderboard) interaktif langsung di dalam kelas.</p>
+                    </div>
+                    <button onclick="showGroupSetup()" class="mt-6 w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-orbitron font-bold text-sm rounded-lg transition-all glow-box-cyan border border-purple-400/30">
+                        Buka Mod Kumpulan 👥
+                    </button>
                 </div>
-                <button id="next-btn" disabled onclick="handleNext()" class="px-6 py-2 bg-cyan-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-cyan-500 text-white font-orbitron font-bold text-sm rounded-lg transition-all flex items-center gap-2 shadow-lg">
-                    <span>Misi Seterusnya</span> <span>🚀</span>
-                </button>
             </div>
         </div>
 
-        <!-- SCREEN 3: GAME OVER & SUMMARY (SIJIL) -->
+        <!-- STREAMING_CHUNK: Designing group setup screen markup -->
+        <!-- SCREEN 1B: KUMPULAN SETUP SCREEN -->
+        <div id="screen-group-setup" class="hidden w-full bg-slate-900/70 border border-purple-500/30 rounded-2xl p-6 sm:p-10 backdrop-blur-lg transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold font-orbitron text-center text-purple-400 mb-6 tracking-wide uppercase">
+                Konfigurasi Kumpulan Kelas
+            </h2>
+            
+            <div class="max-w-xl mx-auto mb-8 text-center">
+                <label class="block text-xs font-orbitron text-slate-400 uppercase tracking-widest mb-3">Bilangan Kumpulan (Maksimum 6)</label>
+                <div class="flex justify-center gap-2 mb-6">
+                    <!-- Dynamic selector buttons for groups 2 to 6 -->
+                    <button onclick="setGroupCount(2)" class="group-select-btn px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm font-bold font-orbitron text-slate-300 hover:bg-purple-950 transition-all" id="btn-group-2">2 Kumpulan</button>
+                    <button onclick="setGroupCount(3)" class="group-select-btn px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm font-bold font-orbitron text-slate-300 hover:bg-purple-950 transition-all" id="btn-group-3">3 Kumpulan</button>
+                    <button onclick="setGroupCount(4)" class="group-select-btn px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm font-bold font-orbitron text-slate-300 hover:bg-purple-950 transition-all" id="btn-group-4">4 Kumpulan</button>
+                    <button onclick="setGroupCount(5)" class="group-select-btn px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm font-bold font-orbitron text-slate-300 hover:bg-purple-950 transition-all" id="btn-group-5">5 Kumpulan</button>
+                    <button onclick="setGroupCount(6)" class="group-select-btn px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm font-bold font-orbitron text-slate-300 hover:bg-purple-950 transition-all" id="btn-group-6">6 Kumpulan</button>
+                </div>
+
+                <!-- Custom Group Names Inputs -->
+                <div class="text-left bg-slate-950/60 p-6 rounded-xl border border-slate-800 space-y-4 mb-8">
+                    <span class="text-xs font-bold text-cyan-400 font-orbitron block mb-2">✍️ EDIT NAMA KUMPULAN (OPSYENAL):</span>
+                    <div id="group-names-inputs" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Dynamic Input Fields will be populated here -->
+                    </div>
+                </div>
+
+                <div class="flex justify-between gap-4">
+                    <button onclick="backToSplash()" class="px-5 py-2 text-xs font-bold font-orbitron rounded-lg border border-slate-700 bg-slate-800/40 text-slate-400 hover:bg-slate-700 transition-all">
+                        Kembali ↩️
+                    </button>
+                    <button onclick="startGroupQuiz()" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-orbitron font-bold text-sm rounded-lg transition-all glow-box-green">
+                        Mulakan Pertempuran Minda! 🛡️
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STREAMING_CHUNK: Coding the main quiz playboard and live scoreboard layout -->
+        <!-- SCREEN 2: GAMEPLAY SCREEN -->
+        <div id="screen-quiz" class="hidden w-full grid grid-cols-1 lg:grid-cols-4 gap-6 transition-all duration-300">
+            
+            <!-- Left Side: Interactive Gameboard Area -->
+            <div class="lg:col-span-3 bg-slate-900/70 border border-cyan-500/30 rounded-2xl p-4 sm:p-8 glow-box-cyan backdrop-blur-lg flex flex-col justify-between">
+                
+                <!-- Quiz Progress Panel -->
+                <div>
+                    <div class="flex justify-between items-center mb-4 text-xs font-orbitron border-b border-slate-800/80 pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 bg-cyan-950 text-cyan-400 rounded border border-cyan-500/30 font-bold" id="question-index">SOALAN 1 / 10</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <!-- Target indicator -->
+                            <div class="text-right">
+                                <span class="text-slate-400" id="stat-label">TENAGA PERISAI:</span>
+                                <span class="text-emerald-400 font-bold block sm:inline ml-1" id="stat-val">100%</span>
+                            </div>
+                            <div id="stat-bar-container" class="w-24 bg-slate-800 h-2 rounded-full overflow-hidden">
+                                <div id="stat-bar" class="bg-emerald-400 h-full w-full transition-all duration-300"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar Line -->
+                    <div class="w-full bg-slate-950 rounded-full h-1.5 mb-6 overflow-hidden">
+                        <div id="progress-bar-line" class="bg-cyan-400 h-full transition-all duration-300" style="width: 10%;"></div>
+                    </div>
+
+                    <!-- TURN INDICATOR BAR (Visible in Group Mode) -->
+                    <div id="turn-indicator-bar" class="hidden mb-6 p-3 rounded-xl bg-purple-950/40 border border-purple-500/30 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">👥</span>
+                            <span class="text-xs text-purple-300 font-bold font-orbitron">GILIRAN MENJAWAB:</span>
+                        </div>
+                        <span id="current-group-turn-name" class="px-3 py-1 rounded bg-purple-500 text-white font-orbitron font-bold text-sm tracking-wide glow-box-green animate-pulse">
+                            KUMPULAN 1
+                        </span>
+                    </div>
+
+                    <!-- Question display -->
+                    <div class="mb-6">
+                        <div class="text-cyan-400 text-xs uppercase tracking-widest mb-1 font-orbitron font-bold" id="question-tag">Definisi Prasejarah</div>
+                        <h3 id="question-text" class="text-lg sm:text-xl font-bold leading-relaxed text-white">
+                            Memuatkan persoalan pengembaraan masa...
+                        </h3>
+                    </div>
+
+                    <!-- Answer Options Layout -->
+                    <div id="options-container" class="grid grid-cols-1 gap-3 sm:gap-4 mb-6">
+                        <!-- Buttons will be dynamically inserted here -->
+                    </div>
+
+                    <!-- Explanation & Hint Panel (Hidden initially) -->
+                    <div id="feedback-panel" class="hidden rounded-xl p-4 transition-all duration-300 mb-6">
+                        <div class="flex items-start gap-3">
+                            <span class="text-2xl mt-0.5" id="feedback-icon">🚀</span>
+                            <div>
+                                <h4 class="font-bold text-sm font-orbitron mb-1 uppercase tracking-wider" id="feedback-title">Analisis Sistem</h4>
+                                <p class="text-xs sm:text-sm leading-relaxed" id="feedback-rationale">Penjelasan sistem analisis.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Question Control -->
+                <div class="flex justify-between items-center gap-4 mt-4">
+                    <button id="hint-btn" onclick="revealHint()" class="px-3 py-2 text-xs font-bold font-orbitron rounded-lg border border-slate-700 bg-slate-800/40 text-slate-300 hover:bg-slate-700 transition-all">
+                        💡 Imbas Petunjuk
+                    </button>
+                    <div id="hint-text" class="hidden text-xs text-yellow-300 font-medium italic border-l-2 border-yellow-400 pl-2 max-w-sm">
+                        Petunjuk holografik dimuat naik...
+                    </div>
+                    <button id="next-btn" disabled onclick="handleNext()" class="px-6 py-2 bg-cyan-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-cyan-500 text-white font-orbitron font-bold text-sm rounded-lg transition-all flex items-center gap-2 shadow-lg">
+                        <span>Seterusnya</span> <span>🚀</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- STREAMING_CHUNK: Structuring the live classroom leaderboard sidebar -->
+            <!-- Right Side: Live Classroom Leaderboard (Leaderboard Kelas) -->
+            <div id="classroom-leaderboard" class="bg-slate-900/70 border border-purple-500/30 rounded-2xl p-4 sm:p-6 backdrop-blur-lg flex flex-col justify-between">
+                <div>
+                    <h3 class="text-sm font-bold font-orbitron text-purple-400 tracking-wider uppercase mb-4 border-b border-purple-500/20 pb-2 flex items-center gap-2">
+                        <span>🏆</span> PAPAN PENDAHULU
+                    </h3>
+                    <div id="leaderboard-items" class="space-y-3">
+                        <!-- Leaderboard items will be loaded dynamically -->
+                    </div>
+                </div>
+                
+                <div class="mt-6 pt-4 border-t border-slate-800 text-[10px] text-slate-500 text-center">
+                    Sistem Markah Akademi Galaksi: <br> Betul = +100 XP | Salah = 0 XP
+                </div>
+            </div>
+
+        </div>
+
+        <!-- STREAMING_CHUNK: Designing the results page and group leaderboard -->
+        <!-- SCREEN 3: GAME OVER & SUMMARY (SIJIL DAN KEPUTUSAN KUMPULAN) -->
         <div id="screen-result" class="hidden w-full bg-slate-900/80 border border-purple-500/30 rounded-2xl p-6 sm:p-10 text-center glow-box-cyan backdrop-blur-lg transition-all duration-300">
             <div class="mb-4 text-purple-400 font-bold font-orbitron tracking-widest text-sm uppercase">Misi Akademi Selesai</div>
-            <h2 id="rank-title" class="text-3xl sm:text-4xl font-black font-orbitron mb-6 text-white tracking-wide bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 bg-clip-text text-transparent">
-                SATRIA PRASEJARAH GALAKSI
+            
+            <!-- Champion Title Header -->
+            <h2 id="rank-title" class="text-3xl sm:text-5xl font-black font-orbitron mb-6 text-white tracking-wide bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 bg-clip-text text-transparent">
+                TAHNIAH KUMPULAN JUARA!
             </h2>
 
-            <!-- Digital Certificate Box -->
-            <div id="certificate" class="relative max-w-lg mx-auto bg-slate-950/90 border-2 border-amber-500/50 rounded-xl p-6 mb-8 text-slate-300 glow-box-cyan">
+            <!-- Digital Certificate Box / Final Scores Board -->
+            <div id="certificate" class="relative max-w-2xl mx-auto bg-slate-950/90 border-2 border-amber-500/50 rounded-xl p-6 mb-8 text-slate-300 glow-box-cyan">
                 <!-- Corner sci-fi elements -->
                 <div class="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-amber-500"></div>
                 <div class="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-amber-500"></div>
                 <div class="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-amber-500"></div>
                 <div class="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-amber-500"></div>
                 
-                <span class="text-3xl">🏅</span>
-                <p class="text-xs uppercase tracking-widest text-slate-500 font-orbitron mt-2">DOKUMEN PENGIKTIRAFAN AKADEMI</p>
-                <h3 class="text-xl font-bold font-orbitron text-amber-400 my-2">SIJIL PENGEMBARAAN MASA</h3>
-                <p class="text-xs sm:text-sm leading-relaxed max-w-sm mx-auto mb-4">
-                    Telah berjaya meneroka Zaman Paleolitik, Mesolitik, Neolitik, dan Logam dengan penuh keberanian serta kebijaksanaan sejarah.
-                </p>
+                <span class="text-4xl" id="champ-emoji">🏆</span>
+                <p class="text-xs uppercase tracking-widest text-slate-500 font-orbitron mt-2">DOKUMEN PENGIKTIRAFAN KELAS</p>
+                <h3 class="text-xl font-bold font-orbitron text-amber-400 my-2" id="cert-title">SIJIL PENGEMBARAAN MASA KUMPULAN</h3>
                 
-                <div class="grid grid-cols-2 gap-4 border-t border-slate-800 pt-4 mt-2">
-                    <div>
-                        <span class="text-xs text-slate-500 block">MARKAH KEJITUAN:</span>
-                        <span id="final-score" class="text-xl font-black text-white font-orbitron">90%</span>
-                    </div>
-                    <div>
-                        <span class="text-xs text-slate-500 block">KOD KELAYAKAN:</span>
-                        <span class="text-xs text-amber-400 font-mono font-bold block mt-1">#PREHISTORIC-99X</span>
-                    </div>
+                <!-- Winners Podiums -->
+                <div id="final-results-display" class="my-6 space-y-4">
+                    <!-- Dynamic ranking will show here -->
+                </div>
+                
+                <div class="border-t border-slate-800 pt-4 mt-2">
+                    <span class="text-xs text-slate-500 block">KOD PENGESAHAN AKADEMI:</span>
+                    <span class="text-xs text-amber-400 font-mono font-bold block mt-1">#PREHISTORIC-GALACTIC-CAMP-2026</span>
                 </div>
             </div>
 
             <!-- Motivational Message -->
-            <p id="motivational-msg" class="text-slate-300 text-sm sm:text-base max-w-md mx-auto mb-8 italic">
+            <p id="motivational-msg" class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-8 italic">
                 Semoga kuasa sejarah sentiasa bersama anda di masa hadapan!
             </p>
 
@@ -285,21 +372,23 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
                     Mula Semula 🔄
                 </button>
                 <button onclick="window.print()" class="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-orbitron font-bold text-sm rounded-xl transition-all glow-box-cyan">
-                    Cetak Sijil 🖨️
+                    Cetak Sijil Keputusan 🖨️
                 </button>
             </div>
         </div>
 
     </main>
 
+    <!-- STREAMING_CHUNK: Footer details -->
     <!-- FOOTER -->
     <footer class="relative z-10 p-4 border-t border-slate-800 bg-slate-950/60 text-center text-xs text-slate-500">
-        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
             <p>Direka khas untuk Pembelajaran Interaktif Abad ke-21 (PAK-21).</p>
             <p class="font-orbitron text-[10px] uppercase text-cyan-500">Masa Depan Bermula Dari Sejarah Silam</p>
         </div>
     </footer>
 
+    <!-- STREAMING_CHUNK: Populating the question database and state manager -->
     <!-- QUIZ JAVASCRIPT LOGIC -->
     <script>
         const quizData = {
@@ -587,18 +676,149 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
             ]
         };
 
-        let currentQuestionIdx = 0;
-        let score = 100; // Shield Energy start with 100%
-        let selectedOptionIdx = null;
-        let livesLeft = 10; // Corresponds to points system
+        // STREAMING_CHUNK: Setting up state variables for game configuration
+        let isGroupMode = false;
+        let totalGroups = 4;
+        let groups = [];
+        let activeGroupIdx = 0;
 
-        function startQuiz() {
+        let currentQuestionIdx = 0;
+        let score = 100; // Solo Mode Shield Energy
+        let selectedOptionIdx = null;
+
+        // Default Group Names array
+        const defaultNames = [
+            "Jedi Paleolitik",
+            "Satria Mesolitik",
+            "Masyarakat Neolitik",
+            "Skuad Zaman Logam",
+            "Arkeologi Lenggong",
+            "Peneroka Gua Niah"
+        ];
+
+        // STREAMING_CHUNK: Managing screen navigation logic
+        function backToSplash() {
             playSound('click');
+            document.getElementById('screen-group-setup').classList.add('hidden');
+            document.getElementById('screen-splash').classList.remove('hidden');
+        }
+
+        function initSoloMode() {
+            playSound('click');
+            isGroupMode = false;
             document.getElementById('screen-splash').classList.add('hidden');
             document.getElementById('screen-quiz').classList.remove('hidden');
+            document.getElementById('classroom-leaderboard').classList.add('hidden');
+            document.getElementById('turn-indicator-bar').classList.add('hidden');
+            
+            // Adjust stats display for Solo
+            document.getElementById('stat-label').innerText = "TENAGA PERISAI:";
+            document.getElementById('stat-val').innerText = "100%";
+            document.getElementById('stat-bar-container').classList.remove('hidden');
+            
+            score = 100;
+            currentQuestionIdx = 0;
             loadQuestion();
         }
 
+        function showGroupSetup() {
+            playSound('click');
+            document.getElementById('screen-splash').classList.add('hidden');
+            document.getElementById('screen-group-setup').classList.remove('hidden');
+            setGroupCount(totalGroups); // Default init
+        }
+
+        // STREAMING_CHUNK: Initializing Group input boxes dynamically
+        function setGroupCount(count) {
+            playSound('click');
+            totalGroups = count;
+            
+            // Update button styles
+            document.querySelectorAll('.group-select-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-900', 'border-purple-400', 'text-white');
+                btn.classList.add('bg-slate-800', 'border-slate-700', 'text-slate-300');
+            });
+            document.getElementById(`btn-group-${count}`).classList.add('bg-purple-900', 'border-purple-400', 'text-white');
+
+            // Generate Input Boxes for custom names
+            const container = document.getElementById('group-names-inputs');
+            container.innerHTML = '';
+            
+            for(let i = 0; i < count; i++) {
+                container.innerHTML += `
+                    <div>
+                        <label class="block text-[10px] text-purple-300 font-orbitron uppercase mb-1">Kumpulan ${i+1}</label>
+                        <input type="text" id="g-input-${i}" value="${defaultNames[i]}" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:border-purple-400 focus:outline-none">
+                    </div>
+                `;
+            }
+        }
+
+        // STREAMING_CHUNK: Setting up Group mode gameplay parameters
+        function startGroupQuiz() {
+            playSound('click');
+            isGroupMode = true;
+            groups = [];
+
+            // Read group inputs
+            for(let i = 0; i < totalGroups; i++) {
+                const nameVal = document.getElementById(`g-input-${i}`).value.trim() || `Kumpulan ${i+1}`;
+                groups.push({
+                    name: nameVal,
+                    score: 0,
+                    history: [] // Tracks correct/wrong for visual representation
+                });
+            }
+
+            activeGroupIdx = 0;
+            currentQuestionIdx = 0;
+
+            document.getElementById('screen-group-setup').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            document.getElementById('classroom-leaderboard').classList.remove('hidden');
+            document.getElementById('turn-indicator-bar').classList.remove('hidden');
+
+            // Adjust Header stats for Groups
+            document.getElementById('stat-label').innerText = "KUMPULAN AKTIF:";
+            document.getElementById('stat-val').innerText = `${totalGroups} TEAM`;
+            document.getElementById('stat-bar-container').classList.add('hidden'); // Hide simple bar
+
+            updateLeaderboard();
+            loadQuestion();
+        }
+
+        // STREAMING_CHUNK: Updating the Live Classroom Leaderboard
+        function updateLeaderboard() {
+            if (!isGroupMode) return;
+            const container = document.getElementById('leaderboard-items');
+            container.innerHTML = '';
+
+            // Sort group clones for board ranking
+            const sortedClones = [...groups].map((g, originalIdx) => ({...g, originalIdx}))
+                                            .sort((a,b) => b.score - a.score);
+
+            sortedClones.forEach((g, rank) => {
+                const isMyTurn = (g.originalIdx === activeGroupIdx);
+                const turnBorder = isMyTurn ? 'border-2 border-green-400 shadow-md bg-purple-950/20' : 'border border-slate-800 bg-slate-950/50';
+                const rankMedal = rank === 0 ? "🥇 " : rank === 1 ? "🥈 " : rank === 2 ? "🥉 " : `&nbsp;${rank + 1}. `;
+
+                container.innerHTML += `
+                    <div class="p-3 rounded-xl transition-all duration-300 ${turnBorder}">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-bold text-slate-200 truncate max-w-[150px]">
+                                ${rankMedal} ${g.name}
+                            </span>
+                            <span class="text-xs font-orbitron font-extrabold text-cyan-400">${g.score} XP</span>
+                        </div>
+                        <div class="flex gap-1">
+                            ${isMyTurn ? '<span class="text-[9px] text-green-400 font-bold font-orbitron tracking-widest animate-pulse">GILIRAN</span>' : ''}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // STREAMING_CHUNK: Loading the current question into UI
         function loadQuestion() {
             selectedOptionIdx = null;
             document.getElementById('feedback-panel').classList.add('hidden');
@@ -615,6 +835,12 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
             // Progress Bar line
             const progressPercent = ((currentQuestionIdx + 1) / quizData.questions.length) * 100;
             document.getElementById('progress-bar-line').style.width = `${progressPercent}%`;
+
+            // Active Turn Bar
+            if (isGroupMode) {
+                document.getElementById('current-group-turn-name').innerText = groups[activeGroupIdx].name;
+                updateLeaderboard();
+            }
 
             // Options loader
             const optionsContainer = document.getElementById('options-container');
@@ -634,18 +860,19 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
             });
         }
 
+        // STREAMING_CHUNK: Managing answer selection, scoring logic, and UI feedback
         function selectOption(index) {
-            if (selectedOptionIdx !== null) return; // Cannot re-answer once selected
+            if (selectedOptionIdx !== null) return; 
             
             selectedOptionIdx = index;
             const currentQuestion = quizData.questions[currentQuestionIdx];
             const isCorrect = currentQuestion.answerOptions[index].isCorrect;
             const optionElements = document.getElementById('options-container').children;
 
-            // Highlight chosen and others
+            // Highlight chosen and other keys
             currentQuestion.answerOptions.forEach((option, idx) => {
                 const elem = optionElements[idx];
-                elem.disabled = true; // disable all
+                elem.disabled = true; // disable all keys
                 const indexSpan = elem.querySelector('span');
 
                 if (option.isCorrect) {
@@ -661,25 +888,28 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
                 }
             });
 
-            // Adjust health meter
+            // Adjust health meter or group scores based on selection
             if (isCorrect) {
                 playSound('correct');
+                if (isGroupMode) {
+                    groups[activeGroupIdx].score += 100; // Reward +100 XP to the active group
+                }
                 showFeedback(true, currentQuestion.answerOptions[index].rationale);
             } else {
                 playSound('wrong');
-                score = Math.max(0, score - 10); // Deduct 10%
-                document.getElementById('score-val').innerText = `${score}%`;
-                document.getElementById('score-bar').style.width = `${score}%`;
-                
-                // Set score bar color
-                if (score <= 30) {
-                    document.getElementById('score-bar').className = "bg-red-500 h-full transition-all duration-300";
-                    document.getElementById('score-val').className = "text-red-400 font-bold block sm:inline ml-1";
-                } else if (score <= 60) {
-                    document.getElementById('score-bar').className = "bg-amber-400 h-full transition-all duration-300";
-                    document.getElementById('score-val').className = "text-amber-400 font-bold block sm:inline ml-1";
+                if (!isGroupMode) {
+                    score = Math.max(0, score - 10); // Deduct 10% in Solo Mode
+                    document.getElementById('stat-val').innerText = `${score}%`;
+                    document.getElementById('stat-bar').style.width = `${score}%`;
+                    
+                    if (score <= 30) {
+                        document.getElementById('stat-bar').className = "bg-red-500 h-full transition-all duration-300";
+                        document.getElementById('stat-val').className = "text-red-400 font-bold block sm:inline ml-1";
+                    } else if (score <= 60) {
+                        document.getElementById('stat-bar').className = "bg-amber-400 h-full transition-all duration-300";
+                        document.getElementById('stat-val').className = "text-amber-400 font-bold block sm:inline ml-1";
+                    }
                 }
-
                 showFeedback(false, currentQuestion.answerOptions[index].rationale);
             }
 
@@ -702,6 +932,7 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
             panel.classList.remove('hidden');
         }
 
+        // STREAMING_CHUNK: Revealing hint box
         function revealHint() {
             playSound('click');
             const currentQuestion = quizData.questions[currentQuestionIdx];
@@ -710,8 +941,15 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
             hintText.classList.toggle('hidden');
         }
 
+        // STREAMING_CHUNK: Managing state rotation to the next question/group
         function handleNext() {
             playSound('click');
+            
+            // Advance active group turn in Group Mode
+            if (isGroupMode) {
+                activeGroupIdx = (activeGroupIdx + 1) % totalGroups;
+            }
+
             currentQuestionIdx++;
             if (currentQuestionIdx < quizData.questions.length) {
                 loadQuestion();
@@ -720,43 +958,77 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
             }
         }
 
+        // STREAMING_CHUNK: Calculating results and compiling the leaderboard certificates
         function showResults() {
             playSound('win');
             document.getElementById('screen-quiz').classList.add('hidden');
             document.getElementById('screen-result').classList.remove('hidden');
             
-            document.getElementById('final-score').innerText = `${score}%`;
+            const certTitle = document.getElementById('cert-title');
+            const displayResults = document.getElementById('final-results-display');
+            const rankTitle = document.getElementById('rank-title');
+            const motivationalMsg = document.getElementById('motivational-msg');
 
-            let rank = "";
-            let msg = "";
-            if (score >= 90) {
-                rank = "GRAND MASTER PRASEJARAH GALAKSI 🏆";
-                msg = "Luar biasa! Pemahaman anda tentang evolusi prasejarah adalah setanding dengan para ilmuwan tertinggi akademi. Semoga Kuasa Sejarah bersama anda!";
-            } else if (score >= 70) {
-                rank = "SATRIA PRASEJARAH 🛡️";
-                msg = "Hebat! Anda menguasai tapak arkeologi dan fasa evolusi dengan sangat lancar. Teruskan usaha anda untuk mencapai tahap kemuncak!";
-            } else if (score >= 50) {
-                rank = "PADAWAN PRASEJARAH 🚀";
-                msg = "Anda berjaya melepasi ujian asas akademi. Masih ada beberapa lompang sejarah yang perlu dibaiki. Teruskan membaca slaid anda!";
+            if (isGroupMode) {
+                // Compile Group Rank Board
+                certTitle.innerText = "SIJIL KEJITUAN AKADEMI KUMPULAN";
+                
+                const sorted = [...groups].sort((a,b) => b.score - a.score);
+                const winnerGroup = sorted[0];
+
+                rankTitle.innerText = `${winnerGroup.name.toUpperCase()} JUARA GALAKSI! 🏆`;
+                motivationalMsg.innerText = `Kumpulan ${winnerGroup.name} menunjukkan pemahaman yang paling jitu dalam menelusuri sejarah prasejarah negara seperti yang didokumentasikan dalam fail Jedi_Prasejarah.pdf. Syabas!`;
+
+                displayResults.innerHTML = `
+                    <div class="text-xs uppercase text-amber-500 tracking-wider font-bold mb-3">KEPUTUSAN PENUH KELAS:</div>
+                    <div class="space-y-2 text-left max-w-md mx-auto">
+                        ${sorted.map((g, idx) => `
+                            <div class="flex justify-between items-center p-3 rounded-lg bg-slate-900 border ${idx === 0 ? 'border-amber-400 bg-amber-950/20' : 'border-slate-800'}">
+                                <span class="font-bold text-sm">${idx + 1}. ${g.name}</span>
+                                <span class="font-orbitron font-extrabold text-sm text-cyan-400">${g.score} XP</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
             } else {
-                rank = "REKRUT AKADEMI MASA DEPAN 🛸";
-                msg = "Misi anda menghadapi sedikit gangguan. Jangan putus asa! Cuba lagi, kaji semula artifak-artifak tersebut, dan kembali ke masa lalu!";
-            }
+                // Solo Mode results card
+                certTitle.innerText = "SIJIL PENGEMBARAAN MASA INDIVIDU";
+                document.getElementById('final-score');
+                
+                let rank = "";
+                let msg = "";
+                if (score >= 90) {
+                    rank = "GRAND MASTER PRASEJARAH GALAKSI 🏆";
+                    msg = "Luar biasa! Pemahaman anda tentang evolusi prasejarah adalah setanding dengan para ilmuwan tertinggi akademi. Semoga Kuasa Sejarah bersama anda!";
+                } else if (score >= 70) {
+                    rank = "SATRIA PRASEJARAH 🛡️";
+                    msg = "Hebat! Anda menguasai tapak arkeologi dan fasa evolusi dengan sangat lancar. Teruskan usaha anda untuk mencapai tahap kemuncak!";
+                } else if (score >= 50) {
+                    rank = "PADAWAN PRASEJARAH 🚀";
+                    msg = "Anda berjaya melepasi ujian asas akademi. Masih ada beberapa lompang sejarah yang perlu dibaiki. Teruskan membaca slaid anda!";
+                } else {
+                    rank = "REKRUT AKADEMI MASA DEPAN 🛸";
+                    msg = "Misi anda menghadapi sedikit gangguan. Jangan putus asa! Cuba lagi, kaji semula artifak-artifak tersebut, dan kembali ke masa lalu!";
+                }
 
-            document.getElementById('rank-title').innerText = rank;
-            document.getElementById('motivational-msg').innerText = `"${msg}"`;
+                rankTitle.innerText = rank;
+                motivationalMsg.innerText = msg;
+
+                displayResults.innerHTML = `
+                    <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl max-w-xs mx-auto">
+                        <span class="text-xs text-slate-500 block font-orbitron">KEJITUAN TENAGA PERISAI:</span>
+                        <span class="text-3xl font-black text-white font-orbitron">${score}%</span>
+                    </div>
+                `;
+            }
         }
 
+        // STREAMING_CHUNK: Resetting state to start again
         function restartQuiz() {
             playSound('click');
             currentQuestionIdx = 0;
             score = 100;
-            
-            // Reset health bar
-            document.getElementById('score-val').innerText = `100%`;
-            document.getElementById('score-val').className = "text-emerald-400 font-bold block sm:inline ml-1";
-            document.getElementById('score-bar').className = "bg-emerald-400 h-full transition-all duration-300";
-            document.getElementById('score-bar').style.width = "100%";
+            activeGroupIdx = 0;
 
             document.getElementById('screen-result').classList.add('hidden');
             document.getElementById('screen-splash').classList.remove('hidden');
@@ -766,9 +1038,9 @@ title:Kuiz Interaktif Zaman Prasejarah: Akademi Galaksi:index.html
 </html>
 ```eof
 
-### Ringkasan Aplikasi & Cara Pelaksanaan di Kelas:
-1. **Penerokaan Menyeluruh:** Setiap soalan direka bagi membolehkan murid meneroka pelbagai aspek Zaman Prasejarah berdasarkan input slaid seperti penemuan Lenggong, fungsi Tembikar Tanah (Neolitik), Sistem Barter, dan garisan masa kronologi.
-2. **Kelebihan PAK-21:** Kuiz ini boleh dimainkan secara beramai-ramai dalam bentuk permainan bilik darjah. Guru boleh membahagikan murid kepada 4 buah kumpulan (Kumpulan Paleolitik, Mesolitik, Neolitik, dan Logam) dan membiarkan mereka bersaing untuk memastikan "Tenaga Perisai Kapal Angkasa" kekal paling tinggi.
-3. **Sentuhan Sijil & Kesan Bunyi:** Di akhir pembelajaran, murid akan berasa bangga melihat penganugerahan status *Grand Master Sejarah* atau *Satria Sejarah* mengikut markah yang diperoleh!
+### Kelebihan Mod Kumpulan Baharu Ini:
+1. **Fleksibiliti (2 hingga 6 Kumpulan):** Guru boleh memecahkan kelas mengikut kapasiti fizikal sedia ada di dalam bilik darjah.
+2. **Keterlibatan Adil (Sistem Giliran):** Setiap kali soalan bertukar, bar penunjuk giliran di skrin (`current-group-turn-name`) akan memaparkan giliran kumpulan baru yang perlu menjawab. Ini dapat mengelakkan daripada sebilangan kecil murid mendominasi kuiz.
+3. **Persaingan Sihat (Papan Pendahulu Langsung):** Murid-murid dapat melihat persaingan markah (XP) secara masa nyata pada panel sebelah kanan. Sesuai untuk dipancarkan ke projektor bilik darjah!
 
-Sila buka fail `.html` ini di mana-mana penyemak imbas internet (Chrome, Safari, Edge, dll.) untuk terus memulakan misi interaktif ini. **Semoga Kuasa Sejarah bersama anda!**
+Sila tekan butang **Preview** (Pratinjau) di atas kanan editor untuk mencuba ciri pembahagian kumpulan ini bersama murid-murid anda!
